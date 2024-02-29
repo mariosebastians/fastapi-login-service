@@ -44,19 +44,3 @@ def get_current_admin(token: Annotated[str, Depends(auth)]):
         exception.couldnt_validate_user()
 
 admin_dependency = Annotated[dict, Depends(get_current_admin)]
-
-# def get_current_user(token: Annotated[str, Depends(auth)]):
-#     try:
-#         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-#         id: int = payload.get('id')
-#         username: str = payload.get('sub')
-#         role_id: int = payload.get('role_id')
-#         if username is None or id is None:
-#             exception.couldnt_validate_user()
-#     except JWTError:
-#         exception.couldnt_validate_user()
-
-# user_dependency = Annotated[dict, Depends(get_current_user)]
-
-
-
