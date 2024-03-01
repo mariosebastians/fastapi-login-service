@@ -12,5 +12,11 @@ def user_not_found():
 def couldnt_validate_user():
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Couldn't validate user")
 
-def UserIsNotAdmin(username: str):
+def password_is_incorrect():
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="The password is incorrect")
+
+def user_is_not_admin(username: str):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"User '{username}', is not an Admin Account")
+
+def old_pass_is_incorrect():
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Old password is incorrect")
