@@ -18,9 +18,9 @@ auth = OAuth2PasswordBearer(tokenUrl='login')
 def authenticate_user(username: str, password: str, db):
     user = db.query(Users).filter(Users.username == username).first()
     if not user:
-        return False
+        exception.user_not_found()
     if not ctx.verify(password, user.password):
-        return False
+        exception.password_is_incorrect()
     return user
 
 def create_token(id: int, username: str, role_id: int):
@@ -39,7 +39,7 @@ def get_current_admin(token: Annotated[str, Depends(auth)]):
         if username is None or id is None:
             exception.couldnt_validate_user()
         if role_id == 2:
-            exception.UserIsNotAdmin(username)
+            exception.user_is_not_admin(username)
     except JWTError:
         exception.couldnt_validate_user()
 
