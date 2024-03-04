@@ -1,11 +1,8 @@
-from db.database import db_dependency
 from db.models import Users, Roles
 from handler import exception
 from handler.auth import ctx, authenticate_user, create_token, check_admin_role
 from schema import Token
 
-from typing import Annotated
-from fastapi import Depends
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 
