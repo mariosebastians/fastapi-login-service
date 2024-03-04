@@ -1,7 +1,7 @@
 from db import repository
 from db.database import db_dependency
 from schema import Token
-from handler.auth import admin_dependency
+from handler.auth import user_dependency
 
 from typing import Annotated
 from fastapi import FastAPI, Depends
@@ -32,10 +32,10 @@ def change_pass(username: str, old_pass: str, new_pass: str, db: db_dependency):
 
 @app.get("/users", tags=["Admin Only"], summary="Retrieve all user data", 
          description="You will need to authenticate using an Admin account to access this endpoint")
-def get_all_user(admin: admin_dependency, db: db_dependency):
+def get_all_user(admin: user_dependency, db: db_dependency):
     return repository.get_all_user(db)
 
 @app.delete("/deleteuser", tags=["Admin Only"], summary="Delete a user by their username",
             description="You will need to authenticate using an Admin account to access this endpoint")
-def delete_user(admin: admin_dependency, username: str, db: db_dependency):
+def delete_user(admin: user_dependency, username: str, db: db_dependency):
     return repository.delete_user(username, db)

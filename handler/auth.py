@@ -1,4 +1,6 @@
 from db.models import Users
+# from db.repository import get_user
+from db.database import db_dependency
 from handler import exception
 
 from typing import Annotated
@@ -30,7 +32,7 @@ def create_token(id: int, username: str, role_id: int):
     encoded = jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded
 
-def get_current_admin(token: Annotated[str, Depends(auth)]):
+def get_current_user(token: Annotated[str, Depends(auth)], db: db_dependency):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         id: int = payload.get('id')
@@ -43,4 +45,11 @@ def get_current_admin(token: Annotated[str, Depends(auth)]):
     except JWTError:
         exception.couldnt_validate_user()
 
-admin_dependency = Annotated[dict, Depends(get_current_admin)]
+    user = db.query(Users).filter(Users.username == username).first()
+    if not user:
+        exception.user_not_found()
+    return user
+
+
+
+user_dependency = Annotated[dict, Depends(get_current_user)]
