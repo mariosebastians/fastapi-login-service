@@ -1,7 +1,7 @@
 from db import repository
 from db.database import db_dependency
 from schema import Token
-from handler.auth import admin_dependency
+from handler.auth import user_dependency
 
 from typing import Annotated
 from fastapi import FastAPI, Depends
@@ -23,19 +23,25 @@ def login_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: d
     return repository.login_user(form_data, db)
 
 @app.put("/changename", tags=["Public"], summary="Change username")
-def change_username(old_username: str, new_username: str, password: str, db: db_dependency):
-    return repository.change_username(old_username, new_username, password, db)
+def change_username(user: user_dependency, new_username: str, db: db_dependency):
+    """
+    You need to authenticate first in order to change your username    
+    """
+    return repository.change_username(user, new_username, db)
 
 @app.put("/changepass", tags=["Public"], summary="Change user password")
-def change_pass(username: str, old_pass: str, new_pass: str, db: db_dependency):
-    return repository.change_password(username, old_pass, new_pass, db)
+def change_pass(user: user_dependency, old_pass: str, new_pass: str, db: db_dependency):
+    """
+    You need to authenticate first in order to change your password
+    """
+    return repository.change_password(user, old_pass, new_pass, db)
 
 @app.get("/users", tags=["Admin Only"], summary="Retrieve all user data", 
          description="You will need to authenticate using an Admin account to access this endpoint")
-def get_all_user(admin: admin_dependency, db: db_dependency):
-    return repository.get_all_user(db)
+def get_all_user(admin: user_dependency, db: db_dependency):
+    return repository.get_all_user(admin, db)
 
 @app.delete("/deleteuser", tags=["Admin Only"], summary="Delete a user by their username",
             description="You will need to authenticate using an Admin account to access this endpoint")
-def delete_user(admin: admin_dependency, username: str, db: db_dependency):
-    return repository.delete_user(username, db)
+def delete_user(admin: user_dependency, username: str, db: db_dependency):
+    return repository.delete_user(admin, username, db)
