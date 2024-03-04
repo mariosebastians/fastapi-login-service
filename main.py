@@ -24,10 +24,16 @@ def login_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: d
 
 @app.put("/changename", tags=["Public"], summary="Change username")
 def change_username(user: user_dependency, new_username: str, db: db_dependency):
+    """
+    You need to authenticate first in order to change your username    
+    """
     return repository.change_username(user, new_username, db)
 
 @app.put("/changepass", tags=["Public"], summary="Change user password")
 def change_pass(user: user_dependency, old_pass: str, new_pass: str, db: db_dependency):
+    """
+    You need to authenticate first in order to change your username    
+    """
     return repository.change_password(user, old_pass, new_pass, db)
 
 @app.get("/users", tags=["Admin Only"], summary="Retrieve all user data", 
