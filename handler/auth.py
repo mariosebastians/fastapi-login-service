@@ -1,5 +1,4 @@
 from db.models import Users
-# from db.repository import get_user
 from db.database import db_dependency
 from handler import exception
 
@@ -40,8 +39,6 @@ def get_current_user(token: Annotated[str, Depends(auth)], db: db_dependency):
         role_id: int = payload.get('role_id')
         if username is None or id is None:
             exception.couldnt_validate_user()
-        if role_id == 2:
-            exception.user_is_not_admin(username)
     except JWTError:
         exception.couldnt_validate_user()
 
@@ -50,6 +47,9 @@ def get_current_user(token: Annotated[str, Depends(auth)], db: db_dependency):
         exception.user_not_found()
     return user
 
+def check_admin_role(user: Users):
+    if user.role_id == 2:
+        exception.user_is_not_admin(user.username)
 
 
 user_dependency = Annotated[dict, Depends(get_current_user)]
