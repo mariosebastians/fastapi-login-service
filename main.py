@@ -32,7 +32,7 @@ def change_username(user: user_dependency, new_username: str, db: db_dependency)
 @app.put("/changepass", tags=["Public"], summary="Change user password")
 def change_pass(user: user_dependency, old_pass: str, new_pass: str, db: db_dependency):
     """
-    You need to authenticate first in order to change your username    
+    You need to authenticate first in order to change your password
     """
     return repository.change_password(user, old_pass, new_pass, db)
 
