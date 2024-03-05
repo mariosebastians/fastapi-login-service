@@ -18,7 +18,7 @@ def create_user(username: str, password: str, role_id: int, db: db_dependency):
     """
     return repository.create_user(username, password, role_id, db)
 
-@app.post("/login", tags=["Public"], summary="Do a login and retreive a JWT Token", response_model=Token)
+@app.post("/login", tags=["Public"], summary="Do a login and retreive a JWT Token", response_model=Token, include_in_schema=False)
 def login_user(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: db_dependency):
     return repository.login_user(form_data, db)
 
