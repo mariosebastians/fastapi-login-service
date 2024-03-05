@@ -11,6 +11,6 @@ username: public<br>
 password: public
 
 ### Swagger UI
-![swaggerui](https://github.com/mariosebastians/fastapi-login-service/assets/81697887/3dcedc54-03f9-45a7-b1e6-3c98fa0afefb)
+![image](https://github.com/mariosebastians/fastapi-login-service/assets/81697887/e588e24a-01e1-4c40-9557-76d13e4e5239)
 http://127.0.0.1:8000/docs<br>
 *accessible after uvicorn is active*
